@@ -14,13 +14,16 @@
         private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
         {
             new Tuple<string, Action<string>>("help", PrintHelp),
-            new Tuple<string, Action<string>>("exit", Exit),
             new Tuple<string, Action<string>>("stat", Stat),
+            new Tuple<string, Action<string>>("create", Create),
+            new Tuple<string, Action<string>>("exit", Exit),
         };
 
         private static string[][] helpMessages = new string[][]
         {
             new string[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
+            new string[] { "stat", "ptints the stat", "The 'stat' command prints the stat." },
+            new string[] { "create", "create new write", "The 'crete' command crete new write." },
             new string[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
 
@@ -104,5 +107,39 @@
             Console.WriteLine($"{recordsCount} record(s).");
         }
 
+        private static void Create(string parameters)
+        {
+            Console.WriteLine("First name: ");
+            var firstName = Console.ReadLine();
+            if (string.IsNullOrEmpty(firstName))
+            {
+                Console.WriteLine("First name don't be null or empty");
+            }
+
+            Console.WriteLine("Last name: ");
+            var lastName = Console.ReadLine();
+            if (string.IsNullOrEmpty(lastName))
+            {
+                Console.WriteLine("Last name don't be null or empty");
+            }
+
+            Console.WriteLine("Date of birth: ");
+            var stringateOfBirth = Console.ReadLine();
+
+            DateTime dateOfBirth;
+            if (string.IsNullOrEmpty(stringateOfBirth))
+            {
+                Console.WriteLine("Date of birth don't be null or empty");
+            }
+
+            if (!DateTime.TryParse(stringateOfBirth, out dateOfBirth))
+            {
+                Console.WriteLine("Date of birth be day/month/year");
+            }
+
+            fileCabinetService.CreateRecord(firstName, lastName, dateOfBirth);
+
+            Console.WriteLine($"Record #{fileCabinetService.GetStat()} is created.");
+        }
     }
 }
