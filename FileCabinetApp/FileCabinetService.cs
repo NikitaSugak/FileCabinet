@@ -3,6 +3,7 @@
     public class FileCabinetService
     {
         private readonly List<FileCabinetRecord> list = new List<FileCabinetRecord>();
+        private int stat = 0;
 
         public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth)
         {
@@ -13,13 +14,12 @@
         public FileCabinetRecord[] GetRecords()
         {
             // TODO: добавьте реализацию метода
-            return new FileCabinetRecord[] { };
+            return Array.Empty<FileCabinetRecord>();
         }
 
         public int GetStat()
         {
-            // TODO: добавьте реализацию метода
-            return 0;
+            return this.stat;
         }
     }
 }
