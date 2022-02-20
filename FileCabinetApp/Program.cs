@@ -16,6 +16,7 @@
             new Tuple<string, Action<string>>("help", PrintHelp),
             new Tuple<string, Action<string>>("stat", Stat),
             new Tuple<string, Action<string>>("create", Create),
+            new Tuple<string, Action<string>>("list", List),
             new Tuple<string, Action<string>>("exit", Exit),
         };
 
@@ -24,6 +25,7 @@
             new string[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
             new string[] { "stat", "ptints the stat", "The 'stat' command prints the stat." },
             new string[] { "create", "create new write", "The 'crete' command crete new write." },
+            new string[] { "list", "list all write", "The 'list' command list all write." },
             new string[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
 
@@ -109,21 +111,21 @@
 
         private static void Create(string parameters)
         {
-            Console.WriteLine("First name: ");
+            Console.Write("First name: ");
             var firstName = Console.ReadLine();
             if (string.IsNullOrEmpty(firstName))
             {
                 Console.WriteLine("First name don't be null or empty");
             }
 
-            Console.WriteLine("Last name: ");
+            Console.Write("Last name: ");
             var lastName = Console.ReadLine();
             if (string.IsNullOrEmpty(lastName))
             {
                 Console.WriteLine("Last name don't be null or empty");
             }
 
-            Console.WriteLine("Date of birth: ");
+            Console.Write("Date of birth: ");
             var stringateOfBirth = Console.ReadLine();
 
             DateTime dateOfBirth;
@@ -140,6 +142,16 @@
             fileCabinetService.CreateRecord(firstName, lastName, dateOfBirth);
 
             Console.WriteLine($"Record #{fileCabinetService.GetStat()} is created.");
+        }
+
+        private static void List(string parameters)
+        {
+            FileCabinetRecord[] fileCabinetRecords = fileCabinetService.GetRecords();
+
+            for (int i = 0; i < fileCabinetRecords.Length; i++)
+            {
+                Console.WriteLine($"#{fileCabinetRecords[i].Id}, {fileCabinetRecords[i].FirstName}, {fileCabinetRecords[i].LastName}, {fileCabinetRecords[i].DateOfBirth.ToString("yyyy-MMM-dd", new System.Globalization.CultureInfo("en-US"))}");
+            }
         }
     }
 }
