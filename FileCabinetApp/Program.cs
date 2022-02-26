@@ -8,17 +8,24 @@
         private const int DescriptionHelpIndex = 1;
         private const int ExplanationHelpIndex = 2;
 
+        private static FileCabinetService fileCabinetService = new FileCabinetService();
         private static bool isRunning = true;
 
         private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
         {
             new Tuple<string, Action<string>>("help", PrintHelp),
+            new Tuple<string, Action<string>>("stat", Stat),
+            new Tuple<string, Action<string>>("create", Create),
+            new Tuple<string, Action<string>>("list", List),
             new Tuple<string, Action<string>>("exit", Exit),
         };
 
         private static string[][] helpMessages = new string[][]
         {
             new string[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
+            new string[] { "stat", "ptints the stat", "The 'stat' command prints the stat." },
+            new string[] { "create", "create new write", "The 'crete' command crete new write." },
+            new string[] { "list", "list all write", "The 'list' command list all write." },
             new string[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
 
@@ -94,6 +101,57 @@
         {
             Console.WriteLine("Exiting an application...");
             isRunning = false;
+        }
+
+        private static void Stat(string parameters)
+        {
+            var recordsCount = fileCabinetService.GetStat();
+            Console.WriteLine($"{recordsCount} record(s).");
+        }
+
+        private static void Create(string parameters)
+        {
+            Console.Write("First name: ");
+            var firstName = Console.ReadLine();
+            if (string.IsNullOrEmpty(firstName))
+            {
+                Console.WriteLine("First name don't be null or empty");
+            }
+
+            Console.Write("Last name: ");
+            var lastName = Console.ReadLine();
+            if (string.IsNullOrEmpty(lastName))
+            {
+                Console.WriteLine("Last name don't be null or empty");
+            }
+
+            Console.Write("Date of birth: ");
+            var stringateOfBirth = Console.ReadLine();
+
+            DateTime dateOfBirth;
+            if (string.IsNullOrEmpty(stringateOfBirth))
+            {
+                Console.WriteLine("Date of birth don't be null or empty");
+            }
+
+            if (!DateTime.TryParse(stringateOfBirth, out dateOfBirth))
+            {
+                Console.WriteLine("Date of birth be day/month/year");
+            }
+
+            fileCabinetService.CreateRecord(firstName, lastName, dateOfBirth);
+
+            Console.WriteLine($"Record #{fileCabinetService.GetStat()} is created.");
+        }
+
+        private static void List(string parameters)
+        {
+            FileCabinetRecord[] fileCabinetRecords = fileCabinetService.GetRecords();
+
+            for (int i = 0; i < fileCabinetRecords.Length; i++)
+            {
+                Console.WriteLine($"#{fileCabinetRecords[i].Id}, {fileCabinetRecords[i].FirstName}, {fileCabinetRecords[i].LastName}, {fileCabinetRecords[i].DateOfBirth.ToString("yyyy-MMM-dd", new System.Globalization.CultureInfo("en-US"))}");
+            }
         }
     }
 }
