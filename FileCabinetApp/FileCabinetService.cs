@@ -28,6 +28,8 @@
                 fileCabinetRecords[i] = this.list[i];
             }
 
+            fileCabinetRecords = list.ToArray();;
+
             return fileCabinetRecords;
         }
 
